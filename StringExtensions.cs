@@ -8,6 +8,16 @@ namespace EisnelShared
 {
     public static class StringExtensions
     {
+        public static bool NullOrWhiteSpace(this string s)
+        {
+            return string.IsNullOrWhiteSpace(s);
+        }
+
+        public static bool NullOrEmpty(this string s)
+        {
+            return string.IsNullOrEmpty(s);
+        }
+
         public static string AsNullIfEmpty(this string s)
         {
             return string.IsNullOrEmpty(s) ? null : s;
