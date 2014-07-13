@@ -14,11 +14,25 @@ namespace EisnelShared
     {
         private const string DEFAULT_VECTOR = "00000000000000000000000000000000";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <param name="keyHex">the 32 byte key in hexedecimal (so a string with 64 hex characters)</param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public static string EncryptAes(this string plainText, string keyHex, Encoding encoding)
         {
             return new SimplerAES(keyHex, DEFAULT_VECTOR, encoding).Encrypt(plainText);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <param name="keyHex">the 32 byte key in hexedecimal (so a string with 64 hex characters)</param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public static string DecryptAes(this string cipherText, string keyHex, Encoding encoding)
         {
             return new SimplerAES(keyHex, DEFAULT_VECTOR, encoding).Decrypt(cipherText);
@@ -85,6 +99,11 @@ namespace EisnelShared
 
         public SimplerAES(byte[] key, byte[] vector, Encoding encoding)
         {
+            if (key == null) throw new ArgumentNullException("SimplerAES: Null key passed");
+            if (key.Length != 32) throw new ArgumentException("SimplerAES: Key expected to have 32 bytes, actually has " + key.Length + " bytes");
+            if (vector == null) throw new ArgumentNullException("SimplerAES: Null vector passed");
+            if (vector.Length != 16) throw new ArgumentException("SimplerAES: Vector expected to have 16 bytes, actually has " + vector.Length + " bytes");
+
             RijndaelManaged rm = new RijndaelManaged();
             encryptor = rm.CreateEncryptor(key, vector);
             decryptor = rm.CreateDecryptor(key, vector);
